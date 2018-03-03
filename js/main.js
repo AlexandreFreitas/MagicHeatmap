@@ -35,15 +35,33 @@ $(document).ready(function(){
             .append(tr
                 .append($("<td/>").text(testName))
                 .append($("<td/>")
-                    .append($("<button/>").text("Play"))));
+                    .append($("<button/>").text("Play").addClass("btnPlay").attr("data-first", "false")))
+                .append($("<td/>")
+                    .append($("<button/>").text("Pause").addClass("btnPause")))
+                .append($("<td/>")
+                    .append($("<button/>").text("Show").addClass("btnShow"))));
 
 
 
     });
 
-    $("#divTests").on("click", "tr > td > button", function(){
+
+    $("#divTests").on("click", "tr > td > button.btnPlay", function(){
         let testName = $(this).parent().parent().get(0).__testName__;
-        mysocket.send("createTest", testName);
+        mysocket.send("createTest", {name: testName, ft: $(this).attr("data-first")});
+        $(this).attr("data-first", "true");
+
+    }).on("click", "tr > td > button.btnPause", function(){
+        mysocket.send("pause");
+
+    }).on("click", "tr > td > button.btnShow", function(){
+        let testName = $(this).parent().parent().get(0).__testName__;
+        let IMGtype = $('input.radioIMGType:checked').val();
+        let newWindow = window.open("./pages/heatmap.html", "HEATMAP", "width=1000,height=600");
+        console.log(newWindow);
+        newWindow.__arquivo__ = testName+".txt";
+        newWindow.__IMGtype__ = IMGtype;
+        console.log("IMGtype", IMGtype);
     });
 });
 

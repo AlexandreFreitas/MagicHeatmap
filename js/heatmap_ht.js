@@ -31,27 +31,36 @@ var points_ht = [];
 var points_et = [];
 
 
+
+
 $(function() {
-    loadData("data/data_ht.txt", function (raw_data_ht) {
-        loadData("data/data_ht.txt", function (raw_data_et) {
-            // console.log(raw_data_et);
-            let max_ht = populatePoints(points_ht, raw_data_ht);
-            let max_et = populatePoints(points_et, raw_data_et);
-            let data_ht = {
-                max: max_ht,
-                data: points_ht
-            };
-            heatmapInstance_ht.setData(data_ht);
+    if(window.__IMGtype__) {
+        $(".heatmap").css("background-image", "url(./../data/fig_"+window.__IMGtype__+".png)")
+    }
 
-            let data_et = {
-                max: max_et,
-                data: points_et
-            };
-            heatmapInstance_et.setData(data_et);
+    if(window.__arquivo__) {
+        console.log("./../"+window.__arquivo__);
+        // loadData("./../"+window.__arquivo__, function (raw_data_ht) {
+            loadData("./../"+window.__arquivo__, function (raw_data_et) {
+                // console.log(raw_data_et);
+                // let max_ht = populatePoints(points_ht, raw_data_ht);
+                let max_et = populatePoints(points_et, raw_data_et);
+                // let data_ht = {
+                //     max: max_ht,
+                //     data: points_ht
+                // };
+                // heatmapInstance_ht.setData(data_ht);
 
-            adjustHeatMaps();
-        });
-    });
+                let data_et = {
+                    max: max_et,
+                    data: points_et
+                };
+                heatmapInstance_et.setData(data_et);
+
+                adjustHeatMaps();
+            });
+        // });
+    }
 });
 
 function adjustHeatMaps(){
